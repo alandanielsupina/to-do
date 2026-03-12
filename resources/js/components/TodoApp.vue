@@ -50,104 +50,102 @@
 export default {
 
 data(){
-return{
-tasks:[],
-newTask:'',
+    return{
+        tasks:[],
+        newTask:'',
 
-editingTask:null,
-editTitle:''
-
-}
+        editingTask:null,
+        editTitle:''
+    }
 },
 
 mounted(){
-this.fetchTasks()
+    this.fetchTasks()
 },
 
 methods:{
 
-async fetchTasks(){
+    async fetchTasks(){
 
-const res = await fetch('/api/tasks')
-const data = await res.json()
+    const res = await fetch('/api/tasks')
+    const data = await res.json()
 
-this.tasks=data
+    this.tasks=data
 
-},
+    },
 
-async addTask(){
+    async addTask(){
 
-if(!this.newTask) return
+        if(!this.newTask) return
 
-await fetch('/api/tasks',{
-method:'POST',
-headers:{
-'Content-Type':'application/json',
-'Accept':'application/json'
-},
-body:JSON.stringify({
-title:this.newTask
-})
-})
+        await fetch('/api/tasks',{
+            method:'POST',
+            headers:{
+            'Content-Type':'application/json',
+            'Accept':'application/json'
+            },
+            body:JSON.stringify({
+                title:this.newTask
+            })
+        })
 
-this.newTask=''
-this.fetchTasks()
+        this.newTask=''
+        this.fetchTasks()
 
-},
+    },
 
-startEdit(task){
+    startEdit(task){
 
-this.editingTask = task.id
-this.editTitle = task.title
+        this.editingTask = task.id
+        this.editTitle = task.title
 
-},
+    },
 
-cancelEdit(){
+    cancelEdit(){
 
-this.editingTask = null
-this.editTitle = ''
+        this.editingTask = null
+        this.editTitle = ''
 
-},
+    },
 
-async updateTask(task){
+    async updateTask(task){
 
-await fetch('/api/tasks/'+task.id,{
-method:'PUT',
-headers:{
-'Content-Type':'application/json'
-},
-body:JSON.stringify({
-title:this.editTitle
-})
-})
+        await fetch('/api/tasks/'+task.id,{
+            method:'PUT',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify({
+            title:this.editTitle
+            })
+        })
 
-this.editingTask=null
-this.editTitle=''
+        this.editingTask=null
+        this.editTitle=''
 
-this.fetchTasks()
+        this.fetchTasks()
 
-},
+    },
 
-async deleteTask(task){
+    async deleteTask(task){
 
-await fetch('/api/tasks/'+task.id,{
-method:'DELETE'
-})
+        await fetch('/api/tasks/'+task.id,{
+            method:'DELETE'
+        })
 
-this.fetchTasks()
+        this.fetchTasks()
 
-},
+    },
 
-async completeTask(task){
+    async completeTask(task){
 
-await fetch('/api/tasks/'+task.id+'/complete',{
-method:'PATCH'
-})
+        await fetch('/api/tasks/'+task.id+'/complete',{
+        method:'PATCH'
+        })
 
-this.fetchTasks()
+        this.fetchTasks()
 
-}
-
+    }
 }
 }
 </script>
